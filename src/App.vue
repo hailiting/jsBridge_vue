@@ -32,7 +32,7 @@ export default {
       data,
       responseCallback
     ) {
-      alert("APPTEXT: data from Java: = " + data);
+      alert("APPTEXT: data from Java: = " + data+`${responseCallback}`);
     });
   },
   methods: {
