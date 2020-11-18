@@ -28,10 +28,11 @@ export default {
       console.log("子组件beforeMount");
   },
   mounted() {
-    window.WebViewJavascriptBridge.registerHandler("getImageStr", function(data, responseCallback) {
-        document.getElementById("show").innerHTML = ("data from Java: = " + data);
-        var responseData = "Javascript Says Right back aka!";
-        responseCallback(responseData);
+   window.WebViewJavascriptBridge.registerHandler("getImageStr", function(
+      data,
+      responseCallback
+    ) {
+      alert("APPTEXT: data from Java: = " + data);
     });
   },
   methods: {
