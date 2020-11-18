@@ -7,6 +7,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import  './config/bridge'
 
 export default {
   name: 'App',
