@@ -37,11 +37,13 @@ export default {
   },
   methods: {
   formJava(){
+    const _this = this;
       window.WebViewJavascriptBridge.callHandler(
         'updaloadImage'
         , {'param': "str1"}
         , function(responseData) {
-            this.msg="send get responseData from java, data = " + responseData;
+          alert(`${responseData}`);
+            _this.msg="send get responseData from java, data = " + responseData;
         }
     );
   }
