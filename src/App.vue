@@ -3,6 +3,9 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <h1>{{msg}}</h1>
     <button @click="formJava">从java来</button>
+    <template v-if="imgSrc">
+      <img :src="imgSrc" style="width: 200px;height: 200px"/>
+    </template>
   </div>
 </template>
 
@@ -13,7 +16,8 @@ export default {
   name: 'App',
   data () {
     return {
-      msg: 'safsd'
+      msg: 'safsd',
+      imgSrc:"",
     }
   },
   components: {
@@ -28,22 +32,30 @@ export default {
       console.log("子组件beforeMount");
   },
   mounted() {
-   window.WebViewJavascriptBridge.registerHandler("getImageStr", function(
+    const _this = this;
+    window.WebViewJavascriptBridge.registerHandler("getImageStr", function(
       data,
       responseCallback
     ) {
-      alert("APPTEXT: data from Java: = " + data+`${responseCallback}`);
+      const dataJson = JSON.parse(data)
+      alert("INDEX: data from Java: = " + dataJson+`${responseCallback}`);
+      if(dataJson && dataJson.imageBase64Str){
+        // _this.msg="send get dataJson from java, dataJson = " + dataJson.imageBase64Str;
+        _this.imgSrc = "data:image/png;base64,"+dataJson.imageBase64Str;
+      }
     });
   },
   methods: {
   formJava(){
     const _this = this;
       window.WebViewJavascriptBridge.callHandler(
-        'updaloadImage'
-        , {'param': "str1"}
+        'updaloadImage', {'param': "str1"}
         , function(responseData) {
           alert(`${responseData}`);
-            _this.msg="send get responseData from java, data = " + responseData;
+           if(responseData && responseData.imageBase64Str){
+            _this.msg="send get responseData from java, data = " + responseData.imageBase64Str;
+            _this.imgSrc = responseData.imageBase64Str;
+           }
         }
     );
   }
