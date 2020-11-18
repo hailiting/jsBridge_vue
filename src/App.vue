@@ -1,18 +1,49 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="firstddd ddcommit"/>
+    <h1>{{msg}}</h1>
+    <button @click="formJava">从java来</button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import  './config/bridge'
 
 export default {
   name: 'App',
+  data () {
+    return {
+      msg: 'safsd'
+    }
+  },
   components: {
-    HelloWorld
+  },
+  beforeCreate() {
+      console.log("子组件beforeCreate");
+  },
+  created() {
+      console.log("子组件Created");
+  },
+  beforeMount() {
+      console.log("子组件beforeMount");
+  },
+  mounted() {
+    window.WebViewJavascriptBridge.registerHandler("getImageStr", function(data, responseCallback) {
+        document.getElementById("show").innerHTML = ("data from Java: = " + data);
+        var responseData = "Javascript Says Right back aka!";
+        responseCallback(responseData);
+    });
+  },
+  methods: {
+  formJava(){
+      window.WebViewJavascriptBridge.callHandler(
+        'updaloadImage'
+        , {'param': "str1"}
+        , function(responseData) {
+            this.msg="send get responseData from java, data = " + responseData;
+        }
+    );
+  }
   }
 }
 </script>
